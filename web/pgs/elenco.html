@@ -1,0 +1,82 @@
+<h2>
+	Articoli recenti.
+</h2>
+<ol id="articles" class=""></ol>
+<div id="pics"></div>
+
+<script>
+	var drawList=function(data){
+		//utilizzo i dati forniti con l'array data per compilare l'elenco dei post.
+		for (var i=0;i<data.length;i++){
+			var d = data[i]
+			d.title=maiuscola(d.title);
+			//creo, mediate jquery, un tag "a", imposto l'attributo href con l'id 
+			//dell'elemento corrente e al suo interno inserisco il titolo 
+			var a=$('<a>').attr('href','#/post/'+d.id).text(d.title);
+			var img=$('<img w3-margin w3-padding onClick="linkImg('+imageArray[i].id+')">').attr('src',imageArray[i].thumbnailUrl);
+			$('<li class="w3-card-2 w3-margin w3-padding w3-large">').append(img).append(a).appendTo($('#articles'));
+		}
+		
+	}
+	
+var linkImg=function(idACaso){
+	utils.idFoto=idACaso;
+	//var w = window.open('#/foto/'+idACaso);
+	window.location = '#/foto/'+idACaso;
+	
+}
+/*versione semplificata da stackoverflow della funzione maiuscola() grazie google!*/
+var maiuscola=function(string){
+	return string.charAt(0).toUpperCase() + string.slice(1);
+/*versione originale by maurizio
+	var stringa1=stringa.split("");
+	stringa1[0]=stringa1[0].toUpperCase();
+	stringa="";
+	for(i=0;i<stringa1.length;i++){
+	stringa+=stringa1[i];		
+	}
+return stringa;*/
+}
+	var popArray=function(data)
+	{
+	
+		imageArray = data;
+		$(pr)
+		//il nostro script dovrà entrare in azione solo a caricamento della pagina avvenuta,
+	    //per garantirci che sia così, utilizziamo il notro costrutto $(document).ready()
+	}	
+	var imageArray;
+	$.ajax({url:a.s+'photos/'}).then(popArray);
+	var pr=function(){
+		//scopo: riportare i titoli dei primi 100 post. 
+		//recupera l'elenco dei post
+		$.ajax({url:a.s+'posts'}).then(drawList) 
+		// una volta caricati i post, richiamo la funzione drawList, 
+		//passando implicitamnte come argomento i dati ricevuti
+	}
+</script>
+
+<!--
+<script>
+	var pr=function(){
+		//recupera l'elenco dei post dal server, e lo processa. 
+		$.ajax({url: a.s + 'posts'}).then(
+			function(data) {
+				for (var i=0;i<data.length;i++){
+					var a=$('<a>').attr('href','#/post/'+data[i].id).text(data[i].title)
+					$('<li>').append(a).appendTo($('#postlist'))
+					
+				}
+			/*
+			  data.map(function(d){
+				var a=$('<a>').attr('href','#/post/'+d.id).text(d.title)
+				$('<li>').append(a).appendTo($('#postlist'))
+				//$('<li>').text(d.title).appendTo($('#postlist'))
+			  })
+			 */
+			}
+		)
+	}
+	$(pr)
+</script>
+-->

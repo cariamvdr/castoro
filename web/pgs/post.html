@@ -1,0 +1,71 @@
+<article id="article">
+	<h2 class="title f w3-padding"></h2>
+	<div class="body f w3-padding"></div>
+	<p class="userId"></p>
+	<p class="id" class="w3-label w3-green"></p>
+	<div class="w3-card-4 w3-margin w3-center" style="width:600px">
+		<img id="ph" />
+	</div>
+	<div id="postId" class="w3-margin w3-padding w3-card-2">
+	</div>
+	
+
+	
+	
+</article>
+<script>
+/**
+*In tutte le funzioni passiamo il parametro data, il cui valore cambia di volta in volta a seconda dell'array 
+*chiamato con ajax().
+*/
+	
+
+	//Nella funzione fillPost data è l'array dei 100 post
+	var fillPost=function(data){
+		//compila la pagina valorizzando i tag in base al loro id
+		if (data!==Object(data)) return // controllo che il parametro "data" contenga effettivamente un oggetto
+		/* ciclo le chiavi dell'oggetto per impostare il testo in base al campo con lo stesso nome */
+		var K=Object.keys(data)
+		K.map(
+			function(d){
+				$('.'+d).text(data[d])
+			data.title=maiuscola(data.title);	
+			data.body=maiuscola(data.body);
+			}
+		)
+		
+	}
+	var fillImg=function(data){
+		var tempUrl=data.thumbnailUrl.replace('150','600')
+		$('#ph').attr('src',tempUrl)
+	}
+	var fillComm=function(data){
+		//utilizzo i dati forniti con l'array data per compilare l'elenco dei commenti.
+		$('<h2>').text('Commenti').appendTo($('#postId'));
+		for (var i=0;i<data.length;i++){
+			var d = data[i]
+			//creo, mediate jquery, un tag "p",  e al suo interno inserisco il "name" del commento corrente 
+			d.name=maiuscola(d.name);
+			d.body=maiuscola(d.body);
+			var a=$('<p class="w3-card-2 w3-padding">').html(d.name+'<br/>'+d.body).append(a).appendTo($('#postId'));
+			
+		}
+	}
+	var maiuscola=function(string){ 
+	return string.charAt(0).toUpperCase() + string.slice(1);
+	}
+		
+	var pr=function(){
+		if (a.notLoad){
+			 $('.w3-card-4').remove()
+			 return
+		}
+		//recupero il post con l'id passato come parametro in GET nell'url. L'ID era stato precedentemente memorizzato in una variabile globale
+		$.ajax({url:a.s+'posts/'+a.id}).then(fillPost)
+		//recupero l'immagine con lo stesso id del post
+		$.ajax({url:a.s+'photos/'+a.id}).then(fillImg)
+		$.ajax({url:a.s+'posts/'+a.id+'/comments'}).then(fillComm)
+		
+	}
+	$(pr)
+</script>
